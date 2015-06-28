@@ -2,11 +2,9 @@ if (Meteor.isClient){
 
   Template.inGameTemplate.helpers({
     player: function(){
-      // Meteor.subscribe('playersByGameId', Session.get('gameId'));
       return Players.findOne({_id: Session.get('playerId')});
     },
     evil: function(){
-      // Meteor.subscribe('playersByGameId', Session.get('gameId'));
       var player = Players.findOne({_id: Session.get('playerId')});
 
       if (player.evil) return 'Evil';
@@ -16,14 +14,13 @@ if (Meteor.isClient){
     hasAbility: function(){
       var player = Players.findOne({_id: Session.get('playerId')});
 
-      return player.ability !== null;
+      return player.ability !== null && player.ability !== undefined;
     }
   });
 
 
   Template.inGamePlayerListTemplate.helpers({
     players: function(){
-      // Meteor.subscribe('playersByGameId', Session.get('gameId'));
       return Players.find({gameId: Session.get('gameId')});
     }
   });
@@ -42,11 +39,11 @@ if (Meteor.isClient){
     characterName: function(){
       var player = Players.findOne({_id: Session.get('playerId')});
 
-      if ((player.evil && this.visibleToEvil && !this.isOberon) || (player.isMerlin && this.visibleToMerlin)){
+      if (player.isPercival && this.visibleToPercival) return 'Possible Merlin';
+      if (((player.evil && this.visibleToEvil && !this.isOberon) ||
+        (player.isMerlin && this.visibleToMerlin)) && !player.isOberon){
         return 'Minion of Mordred';
       }
-
-      if (player.isPercival && this.visibleToPercival) return 'Possible Merlin';
 
       return '';
     }

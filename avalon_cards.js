@@ -69,6 +69,18 @@ Meteor.methods({
   endGame: function(gameId){
     Games.update(gameId, {$set: {status: 0}});
   },
+  setMerlinGameMode: function(gameId, merlinGameMode){
+    Games.update(gameId, {$set: {merlinGameMode: merlinGameMode}});
+  },
+  setPercivalGameMode: function(gameId, percivalGameMode){
+    Games.update(gameId, {$set: {percivalGameMode: percivalGameMode}});
+  },
+  setMordredGameMode: function(gameId, mordredGameMode){
+    Games.update(gameId, {$set: {mordredGameMode: mordredGameMode}});
+  },
+  setOberonGameMode: function(gameId, oberonGameMode){
+    Games.update(gameId, {$set: {oberonGameMode: oberonGameMode}});
+  },
   createPlayer: function(params){
     params.playerToken = generateToken(3);
 

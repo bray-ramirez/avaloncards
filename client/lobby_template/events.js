@@ -1,6 +1,56 @@
 if (Meteor.isClient){
 
   Template.lobbyTemplate.events({
+    'click .js-select-merlin': function(event, template){
+      var isChecked = event.target.checked;
+
+      Meteor.call('setMerlinGameMode', Session.get('gameId'), isChecked);
+
+      if (!isChecked){
+        Meteor.call('setPercivalGameMode', Session.get('gameId'), false);
+        Meteor.call('setMordredGameMode', Session.get('gameId'), false);
+        Meteor.call('setOberonGameMode', Session.get('gameId'), false);
+      }
+    },
+    'click .js-select-percival': function(event, template){
+      if (!isMerlinChecked(template)) return false;
+
+      if (!addCharactersValid(template,
+        {sevenPlayer: '.js-select-mordred',
+        tenPlayer: '.js-select-oberon',
+        character: 'Morgana'})){
+
+        return false;
+      }
+
+      Meteor.call('setPercivalGameMode', Session.get('gameId'), event.target.checked);
+    },
+    'click .js-select-mordred': function(event, template){
+      if (!isMerlinChecked(template)) return false;
+
+      if (!addCharactersValid(template,
+        {sevenPlayer: '.js-select-percival',
+        tenPlayer: '.js-select-oberon',
+        character: 'Mordred'})){
+
+        return false;
+      }
+
+      Meteor.call('setMordredGameMode', Session.get('gameId'), event.target.checked);
+    },
+    'click .js-select-oberon': function(event, template){
+      var noOfPlayers = Players.find({gameId: Session.get('gameId')}).count();
+
+      if (!addCharactersValid(template,
+        {sevenPlayer: '.js-select-percival',
+        tenPlayer: '.js-select-mordred',
+        character: 'Oberon'})){
+
+        return false;
+      }
+
+      Meteor.call('setOberonGameMode', Session.get('gameId'), event.target.checked);
+    },
     'click .js-leave-game': function(){
       Meteor.call('removePlayer', Session.get('playerId'));
 
@@ -147,4 +197,31 @@ var selectPlayer = function(maxLimit, assignedIndex){
   }
 
   return index;
+}
+
+
+var isMerlinChecked = function(template){
+  if (template.find('.js-select-merlin').checked) return true;
+
+  FlashMessages.sendError('Merlin must be selected.', {hideDelay: 800});
+  return false;
+}
+
+
+var addCharactersValid = function(template, options){
+  var noOfPlayers = Players.find({gameId: Session.get('gameId')}).count();
+
+  if ((noOfPlayers < 7 && template.find(options.sevenPlayer).checked) ||
+    (noOfPlayers < 10 && template.find(options.tenPlayer).checked)){
+
+    FlashMessages.sendError(
+      'Few players to play ' + options.character + '.',
+      {hideDelay: 800}
+    );
+
+    return false;
+  }
+
+
+  return true;
 }

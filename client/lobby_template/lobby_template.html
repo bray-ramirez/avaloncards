@@ -25,30 +25,30 @@
     <h3>Select Characters to be included in the game</h3>
     <div class='checkbox'>
       <label>
-        <input type='checkbox' name='merlin'>Merlin/Assassin
+        <input type='checkbox' name='merlin' class='js-select-merlin' checked={{isMerlinGameModeChecked}}>
+        Merlin/Assassin
       </label>
     </div>
 
     <div class='checkbox'>
       <label>
-        <input type='checkbox' name='percival'>Percival/Morgana
+        <input type='checkbox' name='percival' class='js-select-percival' checked={{isPercivalGameModeChecked}}>
+        Percival/Morgana
       </label>
     </div>
 
 
-    {{#if isMaxPlayers}}
-      <div class='checkbox'>
-        <label>
-          <input type='checkbox' name='mordred'>Mordred
-        </label>
-      </div>
+    <div class='checkbox'>
+      <label>
+        <input type='checkbox' name='mordred' class='js-select-mordred' checked={{isMordredGameModeChecked}}>Mordred
+      </label>
+    </div>
 
-      <div class='checkbox'>
-        <label>
-          <input type='checkbox' name='oberon'>Oberon
-        </label>
-      </div>
-    {{/if}}
+    <div class='checkbox'>
+      <label>
+        <input type='checkbox' name='oberon' class='js-select-oberon' checked={{isOberonGameModeChecked}}>Oberon
+      </label>
+    </div>
 
     <hr/>
 

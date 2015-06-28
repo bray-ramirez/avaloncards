@@ -4,7 +4,7 @@ if (Meteor.isClient){
     accessToken: function(){
       Meteor.subscribe('gamesById', Session.get('gameId'));
 
-      var game = Games.findOne({_id: Session.get('gameId')})
+      var game = Games.findOne({_id: Session.get('gameId')});
       if (game === undefined) return ''; // TODO: Add validation
 
       return game.accessToken;
@@ -20,8 +20,25 @@ if (Meteor.isClient){
     invalidGame: function(){
       return noOfPlayers() < 5;
     },
-    isMaxPlayers: function(){
-      return noOfPlayers() == 10;
+    isMerlinGameModeChecked: function(){
+      var game = Games.findOne({_id: Session.get('gameId')});
+
+      return game.merlinGameMode;
+    },
+    isPercivalGameModeChecked: function(){
+      var game = Games.findOne({_id: Session.get('gameId')});
+
+      return game.percivalGameMode;
+    },
+    isMordredGameModeChecked: function(){
+      var game = Games.findOne({_id: Session.get('gameId')});
+
+      return game.mordredGameMode;
+    },
+    isOberonGameModeChecked: function(){
+      var game = Games.findOne({_id: Session.get('gameId')});
+
+      return game.oberonGameMode;
     }
   });
 
