@@ -1,0 +1,46 @@
+<template name='inGameTemplate'>
+  <h4>Your Name: {{player.name}}</h4>
+  <h5>You character: <u>{{player.characterName}}</u> ({{evil}})</h5>
+  {{#if hasAbility}}
+    <small>Ability: <strong>{{player.ability}}</strong></small>
+  {{/if}}
+  <hr/>
+
+  {{> inGamePlayerListTemplate}}
+
+  <hr/>
+
+  <button class='js-end-game btn btn-default'>End Game</button>
+</template>
+
+
+<template name='inGamePlayerListTemplate'>
+  <table class='table table-condensed'>
+    <thead>
+      <th>
+        <td>Player Name</td>
+      </th>
+      <th>
+        <td>Character Name</td>
+      </th>
+    </thead>
+    <tbody>
+      {{#each players}}
+        {{> inGamePlayerTemplate}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+
+<template name='inGamePlayerTemplate'>
+  <tr>
+    <td>
+      {{name}}
+      {{#if isCurrent}}
+        <small>(you)</small>
+      {{/if}}
+    </td>
+    <td>{{characterName}}</td>
+  </tr>
+</template>

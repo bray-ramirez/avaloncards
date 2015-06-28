@@ -1,0 +1,85 @@
+<template name='lobbyTemplate'>
+  <h4>
+    Game Access Token: {{accessToken}}
+  </h4>
+
+  <table class='table table-condensed'>
+    <thead>
+      <th>
+        <td>({{noOfPlayers}}) Player Name</td>
+      </th>
+      <th>
+        <td>Player Token</td>
+      </th>
+      <th></th>
+    </thead>
+    <tbody>
+      {{#each players}}
+        {{> lobbyPlayerTemplate}}
+      {{/each}}
+    </tbody>
+  </table>
+
+
+  <form class='js-start-game'>
+    <h3>Select Characters to be included in the game</h3>
+    <div class='checkbox'>
+      <label>
+        <input type='checkbox' name='merlin'>Merlin/Assassin
+      </label>
+    </div>
+
+    <div class='checkbox'>
+      <label>
+        <input type='checkbox' name='percival'>Percival/Morgana
+      </label>
+    </div>
+
+
+    {{#if isMaxPlayers}}
+      <div class='checkbox'>
+        <label>
+          <input type='checkbox' name='mordred'>Mordred
+        </label>
+      </div>
+
+      <div class='checkbox'>
+        <label>
+          <input type='checkbox' name='oberon'>Oberon
+        </label>
+      </div>
+    {{/if}}
+
+    <hr/>
+
+    <div class='form-group'>
+      {{#if invalidGame}}
+        <small>Need at least 5 players to start</small>
+        <br/>
+      {{/if}}
+      <input type='submit' value='Start Game' disabled={{invalidGame}} class='btn btn-default'/>
+      <button class='js-leave-game btn btn-default'>Leave Game</button>
+    </div>
+  </form>
+</template>
+
+
+<template name='lobbyPlayerTemplate'>
+  <tr>
+    {{#if isCurrent}}
+      <td>
+        {{name}} <small>(you)</small>
+      </td>
+      <td>{{playerToken}}</td>
+      <td></td>
+    {{else}}
+      <td>
+        {{name}}
+      </td>
+      <td>{{playerToken}}</td>
+      <td>
+        <button class='js-remove-player btn btn-danger btn-xs'>x</button>
+      </td>
+    {{/if}}
+  </tr>
+</template>
