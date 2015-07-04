@@ -2,6 +2,11 @@ Games = new Mongo.Collection('games');
 Players = new Mongo.Collection('players');
 
 
+Meteor.startup(function(){
+  cleanupRecords();
+});
+
+
 if (Meteor.isClient){
 
   var trackTemplate = function(){
@@ -32,6 +37,11 @@ if (Meteor.isClient){
 
 
 if (Meteor.isServer) {
+
+  Meteor.publish('games', function(){
+    return Games.find({});
+  });
+
 
   Meteor.publish('gamesById', function(gameId){
     return Games.find({_id: gameId});
@@ -73,7 +83,7 @@ Meteor.methods({
     return Games.insert({
       accessToken: generateToken(6),
       status: 0,
-      createAt: new Date()
+      createdAt: moment().toDate()
     });
   },
   startGame: function(gameId){
@@ -110,6 +120,7 @@ Meteor.methods({
     }
 
     params.playerToken = token;
+    params.createdAt = moment().toDate();
 
     return Players.insert(params);
   },
@@ -144,4 +155,15 @@ var generateToken = function(length){
   }
 
   return token;
+}
+
+
+var cleanupRecords = function(){
+  var expiration = moment().subtract(1, 'd').toDate(),
+      games = Games.find({createdAt: {$lt: expiration}});
+
+  games.forEach(function(game){
+    Players.remove({gameId: game._id});
+    Games.remove({_id: game._id});
+  });
 }
