@@ -23,21 +23,26 @@ if (Meteor.isClient){
     isMerlinGameModeChecked: function(){
       var game = Games.findOne({_id: Session.get('gameId')});
 
+      if (game === undefined) return false;
+
       return game.merlinGameMode;
     },
     isPercivalGameModeChecked: function(){
       var game = Games.findOne({_id: Session.get('gameId')});
 
+      if (game === undefined) return false;
       return game.percivalGameMode;
     },
     isMordredGameModeChecked: function(){
       var game = Games.findOne({_id: Session.get('gameId')});
 
+      if (game === undefined) return false;
       return game.mordredGameMode;
     },
     isOberonGameModeChecked: function(){
       var game = Games.findOne({_id: Session.get('gameId')});
 
+      if (game === undefined) return false;
       return game.oberonGameMode;
     }
   });
