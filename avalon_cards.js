@@ -16,7 +16,6 @@ if (Meteor.isClient){
 
     if (game === undefined || player === undefined){
       Session.set('currentTemplate', 'mainTemplate');
-
       return;
     }
 
@@ -57,6 +56,20 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   createGame: function(){
+    var token = generateToken(6),
+        valid = false;
+
+    while (valid){
+      var game = Games.findOne({accessToken: token});
+
+      if (game === undefined){
+        token = generateToken(6);
+      }
+      else {
+        valid = true;
+      }
+    }
+
     return Games.insert({
       accessToken: generateToken(6),
       status: 0,
@@ -82,7 +95,21 @@ Meteor.methods({
     Games.update(gameId, {$set: {oberonGameMode: oberonGameMode}});
   },
   createPlayer: function(params){
-    params.playerToken = generateToken(3);
+    var token = generateToken(3),
+        valid = false;
+
+    while (valid){
+      var game = Players.findOne({accessToken: token});
+
+      if (game === undefined){
+        token = generateToken(3);
+      }
+      else {
+        valid = true;
+      }
+    }
+
+    params.playerToken = token;
 
     return Players.insert(params);
   },

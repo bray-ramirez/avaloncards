@@ -56,7 +56,6 @@ if (Meteor.isClient){
 
       Session.set('gameId', null);
       Session.set('playerId', null);
-      Session.set('currentTemplate', 'joinGameTemplate');
 
       return false;
     },
